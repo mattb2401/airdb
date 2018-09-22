@@ -18,8 +18,24 @@ func Setenv(key string, value string) error {
 		return err
 	}
 	defer f.Close()
-	if _, err = f.WriteString(text); err != nil {
-		return err
+	var lines []string
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	if len(lines) > 0 {
+		for _, ln := range lines {
+			l := strings.Split(string(ln), "=")
+			if l[0] != key && l[1] != value {
+				if _, err = f.WriteString(text); err != nil {
+					return err
+				}
+			}
+		}
+	} else {
+		if _, err = f.WriteString(text); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -42,4 +58,20 @@ func Getenv(key string) (string, error) {
 		}
 	}
 	return "", errors.New("false")
+}
+
+func Flushenv() error {
+	var err = os.Remove(env_file)
+	if err != nil {
+		return err
+	}
+	_, err = os.Stat(env_file)
+	if os.IsNotExist(err) {
+		var file, err = os.Create(env_file)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+	}
+	return nil
 }

@@ -2,8 +2,6 @@ package main
 
 import (
 	"airdb/config"
-	"airdb/helpers"
-	"airdb/installer"
 	"fmt"
 	"log"
 	"net/http"
@@ -21,14 +19,6 @@ type Init struct {
 
 //Initialize application
 func (i *Init) Initialize() {
-	_, err := helpers.Getenv("IsInstalled")
-	if err != nil {
-		if err.Error() == "false" {
-			installer.RunInstaller()
-		} else {
-			panic(err)
-		}
-	}
 	config := config.GetConfig()
 	dbURI := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=true", config.DB.Username, config.DB.Password, config.DB.Host, config.DB.Name, config.DB.Charset)
 	db, err := gorm.Open(config.DB.Dialect, dbURI)
@@ -60,6 +50,7 @@ func (i *Init) startRoutines() {
 
 // Run application
 func (i *Init) Run(host string) {
+	fmt.Println("Running airdb on " + host)
 	err := http.ListenAndServe(host, i.Route)
 	if err != nil {
 		log.Fatalf("%v", err)

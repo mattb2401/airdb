@@ -2,6 +2,8 @@ package config
 
 import (
 	"airdb/helpers"
+	"fmt"
+	"os"
 )
 
 type Config struct {
@@ -20,19 +22,23 @@ type DBConfig struct {
 func GetConfig() *Config {
 	dbusername, err := helpers.Getenv("dbUsername")
 	if err != nil {
-		panic("db username not found")
+		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
+		os.Exit(103)
 	}
 	dbpassword, err := helpers.Getenv("dbPassword")
 	if err != nil {
-		panic("db password not found")
+		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
+		os.Exit(103)
 	}
 	dbhost, err := helpers.Getenv("dbHost")
 	if err != nil {
-		panic("db host not found")
+		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
+		os.Exit(103)
 	}
 	dbname, err := helpers.Getenv("dbName")
 	if err != nil {
-		panic("db name not found")
+		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
+		os.Exit(103)
 	}
 	return &Config{
 		DB: &DBConfig{
