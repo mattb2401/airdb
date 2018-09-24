@@ -61,6 +61,20 @@ func dbInstaller() {
 		fmt.Println("Exception occured while setting your db host error " + err.Error())
 		os.Exit(103)
 	}
+
+	fmt.Print("Enter your db host port: ")
+	var dbPort string
+	_, err = fmt.Scanf("%s\n", &dbPort)
+	if err != nil {
+		fmt.Println("Enter database info to continue error " + err.Error())
+		os.Exit(103)
+	}
+	err = helpers.Setenv("dbPort", dbPort)
+	if err != nil {
+		fmt.Println("Exception occured while setting your db host port error " + err.Error())
+		os.Exit(103)
+	}
+
 	err = initDB()
 	if err != nil {
 		fmt.Println("Exception occured while creating airdb database " + err.Error())
@@ -91,6 +105,10 @@ func initDB() error {
 	if err != nil {
 		return errors.New("db name not found")
 	}
+	dbport, err := helpers.Getenv("dbPort")
+	if err != nil {
+		return errors.New("db port not found")
+	}
 	var (
 		userSchema = `CREATE TABLE IF NOT EXISTS ` + dbname + `.users (
 			id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -103,11 +121,12 @@ func initDB() error {
 			updated_at datetime NULL DEFAULT NULL,
 			PRIMARY KEY (id)
 		 ) ENGINE=InnoDB`
-		dbSchema = `CREATE TABLE IF NOT EXISTS ` + dbname + `.users (
+		dbSchema = `CREATE TABLE IF NOT EXISTS ` + dbname + `.dbs (
 			id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			name varchar(200) COLLATE utf8_unicode_ci NOT NULL,
 			dbschema varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 			host varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+			port varchar(20) COLLATE utf8_unicode_ci NOT NULL,
 			username varchar(300) COLLATE utf8_unicode_ci NOT NULL,
 			password varchar(300) COLLATE utf8_unicode_ci NOT NULL,
 			userId int(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -115,7 +134,7 @@ func initDB() error {
 			updated_at datetime NULL DEFAULT NULL,
 			PRIMARY KEY (id)
 		) ENGINE=InnoDB`
-		URL = fmt.Sprintf("%s:%s@tcp(%s)/%s", dbusername, dbpassword, dbhost, dbname)
+		URL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbusername, dbpassword, dbhost, dbport, dbname)
 	)
 	var d *sql.DB
 	pr := strings.Split(URL, "/")

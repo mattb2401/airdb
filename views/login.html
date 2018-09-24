@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://use.fontawesome.com/21ffac0d27.js"></script>
+    <title>airdb - Login</title>
+    <link rel="stylesheet" href="views/assets/css/app.css">
+    <style>
+        .loader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #F5F8FA;
+            z-index: 9998;
+            text-align: center;
+        }
+
+        .plane-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+</head>
+<body class="light">
+<div id="app">
+<main>
+    <div id="primary" class="p-t-b-100 height-full ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mx-md-auto">
+                    <div class="text-center">
+                        <h3 class="mt-2">Airdb</h3>
+                    </div>
+                    <form action="/authenticate" method="POST" style='margin-top:30px;'>
+                        <div class="form-group has-icon"><i class="fa fa-user"></i>
+                            <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group has-icon"><i class="fa fa-lock"></i>
+                            <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-md btn-block" value="Log In">
+                        <a href="/forgotten"><p class="forget-pass">Have you forgot your username or password ?</p></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #primary -->
+</main>
+<!--/#app -->
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+</body>
+</html>

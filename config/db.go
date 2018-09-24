@@ -16,6 +16,7 @@ type DBConfig struct {
 	Password string
 	Name     string
 	Host     string
+	Port     string
 	Charset  string
 }
 
@@ -40,6 +41,11 @@ func GetConfig() *Config {
 		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
 		os.Exit(103)
 	}
+	dbport, err := helpers.Getenv("dbPort")
+	if err != nil {
+		fmt.Println("DB configuration not found. Run ./airdb -i to configure the application first")
+		os.Exit(103)
+	}
 	return &Config{
 		DB: &DBConfig{
 			Dialect:  "mysql",
@@ -47,6 +53,7 @@ func GetConfig() *Config {
 			Password: dbpassword,
 			Host:     dbhost,
 			Name:     dbname,
+			Port:     dbport,
 			Charset:  "utf8",
 		},
 	}
