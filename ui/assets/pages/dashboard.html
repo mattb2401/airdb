@@ -1,0 +1,56 @@
+<main>
+<div class="has-sidebar-left has-sidebar-tabs animated fadeInUpShort go">
+    <div class="sticky">
+        <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+            <div class="relative">
+                <div class="d-flex">
+                    <div class="d-none d-md-block">
+                        <h1 class="nav-title">Queries</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/logout"><i class="fa fa-sign-out" style='font-size: 15px;'></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid relative animatedParent animateOnce my-3">
+        <form class="form-horizontal" role='form'>
+            <div class="card no-b my-3" style="background-color:#282a36;">
+                <pre class="card-body" id="editor" style="height:200px;"></pre>
+            </div>
+            <select class="form-control col-sm-2 pull-left" style="height: 35px; margin-right: 10px; font-size: 12px;" ng-model="dbId" ng-options="db.Id as db.Name for db in Dbs">
+                <option ng-selected="true" value="">Select database</option>
+            </select>
+            <button type="button" class="btn btn-primary btn-md btn-block col-sm-1" style='font-size:13px; background-color:#3f51b5; margin-top:10px;' ng-click="runQuery()">Run Query</button>
+        </form>
+        <div class="card no-b my-3">
+            <div class="card-body col-md-12">
+                <div ng-if="message == false">
+                        <div role="alert" class="alert alert-danger"><strong>Oh Snap! </strong>{{ error_message }}</div>
+                </div>
+                <div class="card-title" style='font-size:11px;'>Results</div>
+                <table class="table table-striped data-tables" data-options='{"searching":false, "scrollY": true }' style='font-size:11px;' ng-show="isEmpty(columns)">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="col in Columns" style="font-weight: bold;">{{ col }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="dt in Data">
+                            <td ng-repeat="(key, value) in dt">{{ value }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</main>
+<script src="ui/assets/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ui/assets/js/app.js"  type="text/javascript" charset="utf-8"></script>

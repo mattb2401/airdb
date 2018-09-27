@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="zxx" ng-app="airdbApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://use.fontawesome.com/21ffac0d27.js"></script>
+    <title>Airdb</title>
+    <link rel="stylesheet" href="ui/assets/css/app.css">
+</head>
+<body class="light sidebar-mini sidebar-collapse">
+<input type="hidden" value="{{.SData.userId}}" id="userId"/>
+<aside class="main-sidebar fixed offcanvas b-r sidebar-tabs" data-toggle='offcanvas'>
+        <div class="sidebar" style="background-color:#282a36;">
+            <div class="d-flex hv-100 align-items-stretch">
+                <div class="indigo text-white">
+                    <div class="nav mt-5 pt-5 flex-column nav-pills" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                        <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#/" role="tab"
+                            aria-controls="v-pills-home" aria-selected="true"><i class="fa fa-cubes"></i></a>
+                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#dbs" role="tab"
+                            aria-controls="v-pills-profile" aria-selected="false"><i class="fa fa-database"></i></a>
+                        <a class="nav-link skin_handle"  href="#users"><i class="fa fa-users"></i></a>
+                        <a class="nav-link" id="v-pills-settings-tab" href="#settings"><i class="fa fa-gears"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</aside>
+<div ng-view></div>
+
+<script src="ui/assets/js/jquery.min.js"></script>
+<script crossorigin src="ui/assets/js/angular.min.js"></script>
+<script crossorigin src="ui/assets/js/angular-route.js"></script>
+<script src="ui/assets/js/main.js"></script>
+</body>
+</html>

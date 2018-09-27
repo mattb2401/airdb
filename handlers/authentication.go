@@ -17,13 +17,14 @@ type ViewData struct {
 	Flash      map[string]string
 	FlashCount int
 	Data       interface{}
+	SData      map[string]interface{}
 }
 
 var v ViewData
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	pwd, _ := os.Getwd()
-	t, _ := template.ParseFiles(pwd + "/views/login.html")
+	t, _ := template.ParseFiles(pwd + "/ui/login.html")
 	v.FlashCount = 0
 	t.Execute(w, v)
 }
@@ -31,16 +32,17 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 func Authenticate(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager) {
 	err := r.ParseForm()
 	v.FlashCount = 1
+	v.Flash = make(map[string]string)
 	ss := scs.Load(r)
 	if err != nil {
 		v.Flash["error"] = "Oh Snap!!. Something happened. Error: " + err.Error()
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/login", http.StatusFound)
 	}
 	if r.FormValue("username") != "" && r.FormValue("password") != "" {
 		user := models.User{}
 		if db.Where("username = ?", r.FormValue("username")).First(&user).RecordNotFound() {
 			v.Flash["error"] = "Oh Snap!!. Wrong username or password"
-			http.Redirect(w, r, "/", http.StatusFound)
+			http.Redirect(w, r, "/login", http.StatusFound)
 		} else {
 			if helpers.CheckPasswordHash(r.FormValue("password"), user.Password) {
 				InitFlash()
@@ -49,16 +51,28 @@ func Authenticate(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.
 				ss.PutBool(w, "isLoggedIn", true)
 				ss.PutString(w, "roles", user.Roles)
 				ss.PutInt(w, "userId", user.Id)
-				http.Redirect(w, r, "/dashboard", http.StatusFound)
+				http.Redirect(w, r, "/", http.StatusFound)
 			} else {
 				v.Flash["error"] = "Oh Snap!!. Wrong username or password"
-				http.Redirect(w, r, "/", http.StatusFound)
+				http.Redirect(w, r, "/login", http.StatusFound)
 			}
 		}
 	} else {
 		v.Flash["error"] = "Oh Snap!!. Wrong username or password"
+		http.Redirect(w, r, "/login", http.StatusFound)
+	}
+}
+
+func Logout(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager) {
+	ss := scs.Load(r)
+	err := ss.Clear(w)
+	if err != nil {
+		v.Flash["error"] = "Oh Snap!!. Error logging out"
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
+	v.Flash = make(map[string]string)
+	v.Flash["error"] = "Great !!. Logged out successfully."
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
 func CreateUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -107,5 +121,6 @@ func InitFlash() {
 	if v.FlashCount == 0 {
 		v.Data = nil
 		v.Flash = nil
+		v.SData = nil
 	}
 }

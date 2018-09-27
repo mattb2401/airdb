@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://use.fontawesome.com/21ffac0d27.js"></script>
+    <title>Airdb Portal</title>
+    <link rel="stylesheet" href="ui/assets/css/app.css">
+</head>
+<body class="light">
+<div id="app">
+    <div id="primary" class="p-t-b-100 height-full ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mx-md-auto">
+                    <div class="text-center">
+                        <h3 class="mt-2" style="font-weight:300;">Airdb</h3>
+                    </div>
+                    <form action="/authenticate" method="POST" style='margin-top:30px;'>
+                        <div class="form-group has-icon"><i class="fa fa-user"></i>
+                            <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group has-icon"><i class="fa fa-lock"></i>
+                            <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In" style='font-size:13px; background-color:#3f51b5;'>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="ui/assets/js/jquery.min.js"></script>
+<script crossorigin src="ui/assets/js/angular.min.js"></script>
+<script crossorigin src="ui/assets/js/angular-route.js"></script>
+<script src="ui/assets/js/main.js"></script>
+</body>
+</html>

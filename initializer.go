@@ -31,19 +31,20 @@ func (i *Init) Initialize() {
 	}
 	i.DB = db
 	i.Route = mux.NewRouter()
-	i.Route.HandleFunc(`/views/assets/{path:[a-zA-Z0-9=\-\/\.\_]+}`, use(handleStatic))
+	i.Route.HandleFunc(`/ui/assets/{path:[a-zA-Z0-9=\-\/\.\_]+}`, use(handleStatic))
 	i.Session = scs.NewCookieManager("u46IpCV9y5Vlur8YvODJEhgOY8m9JVE4")
 	i.setRoutes()
 }
 
 func (i *Init) setRoutes() {
-	i.Get("/", i.signIn)
+	i.Get("/login", i.signIn)
 	i.Post("/authenticate", i.authenticate)
-	i.Get("/dashboard", i.dashboard)
+	i.Get("/", i.dashboard)
 	i.Post("/users/register", i.register)
-	i.Post("/users", i.allUsers)
+	i.Get("/users", i.allUsers)
 	i.Post("/dbs", i.allDbs)
 	i.Post("/dbs/add", i.addDB)
+	i.Get("/logout", i.logout)
 	i.Post("/queries/run", i.runQuery)
 }
 
@@ -60,7 +61,7 @@ func (i *Init) Post(path string, f func(w http.ResponseWriter, r *http.Request))
 func handleStatic(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	static := vars["path"]
-	http.ServeFile(w, r, filepath.Join("views/assets", static))
+	http.ServeFile(w, r, filepath.Join("ui/assets", static))
 }
 
 func use(h http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) http.HandlerFunc {
@@ -99,7 +100,11 @@ func (i *Init) allUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (i *Init) dashboard(w http.ResponseWriter, r *http.Request) {
-	handlers.Dashboard(i.DB, w, r)
+	handlers.Dashboard(i.DB, w, r, i.Session)
+}
+
+func (i *Init) logout(w http.ResponseWriter, r *http.Request) {
+	handlers.Logout(i.DB, w, r, i.Session)
 }
 
 // Run application

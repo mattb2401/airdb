@@ -1,0 +1,83 @@
+<main>
+        <div class="has-sidebar-left has-sidebar-tabs">
+            <div class="sticky">
+                <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+                    <div class="relative">
+                        <div class="d-flex">
+                            <div class="d-none d-md-block">
+                                <h1 class="nav-title">DBs</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out" style='font-size: 15px;'></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div>
+                    <div class="row my-3">
+                        <div class="col-md-8 offset-md-2">
+                            <form>
+                                <div class="card no-b">
+                                    <div class="card-body">
+                                        <div ng-if="message == true">
+                                                <div role="alert" class="alert alert-success"><strong>Well done! </strong> Database added successfully </div>
+                                        </div>
+                                        <div ng-if="message == false">
+                                                <div role="alert" class="alert alert-danger"><strong>Oh Snap! </strong>{{ error_message }}</div>
+                                        </div>
+                                        <h5 class="card-title">Add Database</h5>
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-group m-0">
+                                                    <label class="col-form-label s-12">DB Schema</label>
+                                                    <select id="dbschema" class="form-control r-0 light s-12 ">
+                                                        <option>Choose a Datase Schema</option>
+                                                        <option value="mysql">MYSQL</option>
+                                                        <option value="postgres">POSTGRES</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group m-0">
+                                                    <label for="name" class="col-form-label s-12">Database Name</label>
+                                                    <input id="name" placeholder="Enter Database Name" class="form-control r-0 light s-12 " type="text">
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 m-0">
+                                                        <label class="col-form-label s-12">Host</label>
+                                                        <input id="host" placeholder="Enter host for default 127.0.0.1" class="form-control r-0 light s-12 date-picker" type="text">
+                                                    </div>
+                                                    <div class="form-group col-md-6 m-0">
+                                                        <label class="col-form-label s-12">Port</label>
+                                                        <input id="port" placeholder="Enter port for default 3306" class="form-control r-0 light s-12 " type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 m-0">
+                                                <label class="col-form-label s-12">Username</label>
+                                                <input id="username" placeholder="" class="form-control r-0 light s-12 " type="text">
+                                            </div>
+        
+                                            <div class="form-group col-md-6 m-0">
+                                                <label class="col-form-label s-12">Password</label>
+                                                <input id="password" placeholder="Enter password" class="form-control r-0 light s-12 " type="password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="margin-top:-10px;">
+                                        <button type="button" class="btn btn-primary btn-lg" style="font-size:13px; background-color:#3f51b5;" ng-click="saveDb()">Save Database</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+    <script src="ui/assets/js/app.js"  type="text/javascript" charset="utf-8"></script>

@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/alexedwards/scs"
@@ -16,12 +17,13 @@ func RunQuery(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Mana
 	type Params struct {
 		Query  string `json:"query"`
 		DbId   int    `json:"dbId"`
-		UserId int    `json:"userId"`
+		UserId string `json:"userId"`
 	}
 	var p Params
 	decorder := json.NewDecoder(r.Body)
 	err := decorder.Decode(&p)
 	if err != nil {
+		log.Print(err)
 		helpers.RenderJSON(map[string]string{"code": "109", "error": "Invalid json"}, w)
 		return
 	}

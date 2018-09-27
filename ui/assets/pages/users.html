@@ -1,0 +1,50 @@
+<main>
+        <div class="has-sidebar-left has-sidebar-tabs animated fadeInUpShort go">
+            <div class="sticky">
+                <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+                    <div class="relative">
+                        <div class="d-flex">
+                            <div class="d-none d-md-block">
+                                <h1 class="nav-title">User Management</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out" style='font-size: 15px;'></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid relative animatedParent animateOnce my-3">
+                <div class="card no-b my-3">
+                    <div class="card-body">
+                            <table class="table table-hover data-tables" data-options='{"searching":false}' style='font-size:11px;'>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Status</th>
+                                        <th>Role</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in users" style='font-size: 10px;'>
+                                        <td>{{ user.values.Name }}</td>
+                                        <td>{{ user.values.Username }}</td>
+                                        <td>{{ user.values.Status }}</td>
+                                        <td>{{ user.values.Roles }}</td>
+                                        <td>{{ user.values.CreatedAt }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </main>
+    <script src="ui/assets/js/app.js"  type="text/javascript" charset="utf-8"></script>

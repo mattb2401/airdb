@@ -5,6 +5,7 @@ import (
 	"airdb/models"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/alexedwards/scs"
 	"github.com/jinzhu/gorm"
@@ -18,7 +19,7 @@ func AddDb(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager
 		Host     string `json:"host"`
 		Port     string `json:"port"`
 		Name     string `json:"name"`
-		UserId   int    `json:"userId"`
+		UserId   string `json:"userId"`
 	}
 	var p Params
 	decorder := json.NewDecoder(r.Body)
@@ -27,6 +28,7 @@ func AddDb(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager
 		helpers.RenderJSON(map[string]string{"code": "109", "error": "Invalid json"}, w)
 		return
 	}
+	userId, _ := strconv.Atoi(p.UserId)
 	DB := models.Db{
 		Username: p.Username,
 		Password: p.Password,
@@ -34,7 +36,7 @@ func AddDb(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager
 		Host:     p.Host,
 		Port:     p.Port,
 		Name:     p.Name,
-		UserId:   p.UserId,
+		UserId:   userId,
 	}
 	if err := db.Create(&DB).Error; err != nil {
 		helpers.RenderJSON(map[string]string{"code": "109", "error": err.Error()}, w)
@@ -47,7 +49,7 @@ func AddDb(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager
 
 func AllDbs(db *gorm.DB, w http.ResponseWriter, r *http.Request, scs *scs.Manager) {
 	type Params struct {
-		UserId int `json:"userId"`
+		UserId string `json:"userId"`
 	}
 	var p Params
 	decorder := json.NewDecoder(r.Body)

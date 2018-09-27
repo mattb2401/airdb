@@ -1,0 +1,55 @@
+<main>
+    <div class="has-sidebar-left has-sidebar-tabs animated fadeInUpShort go">
+        <div class="sticky">
+            <div class="navbar navbar-expand d-flex justify-content-between bd-navbar white shadow">
+                <div class="relative">
+                    <div class="d-flex">
+                        <div class="d-none d-md-block">
+                            <h1 class="nav-title">DBs</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/logout"><i class="fa fa-sign-out" style='font-size: 15px;'></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid relative animatedParent animateOnce my-3">
+            <div class="card no-b my-3">
+                <div class="card-body">
+                        <a href="#dbs/add"><button type="button" class="btn btn-primary btn-md btn-block col-sm-1" style='font-size:13px; background-color:#3f51b5; margin-top:-3px; margin-bottom:10px;'>Add DB</button></a>
+                        <table class="table table-hover data-tables" data-options='{"searching":false}' style='font-size:11px;'>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Dbschema</th>
+                                    <th>Host</th>
+                                    <th>Port</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="dt in Dbs | orderBy: 'values.CreatedAt'" style='font-size: 10px;'>
+                                    <td>{{ dt.values.Name }}</td>
+                                    <td>{{ dt.values.DBSchema }}</td>
+                                    <td>{{ dt.values.Host }}</td>
+                                    <td>{{ dt.values.Port }}</td>
+                                    <td>{{ dt.values.Username }}</td>
+                                    <td>{{ dt.values.Password }}</td>
+                                    <td>{{ dt.values.CreatedAt }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</main>
+<script src="ui/assets/js/app.js"  type="text/javascript" charset="utf-8"></script>

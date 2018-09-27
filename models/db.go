@@ -3,6 +3,7 @@ package models
 import "time"
 
 type Db struct {
+	Id        int       `gorm:"column:id"`
 	Name      string    `gorm:"column:name"`
 	DBSchema  string    `gorm:"column:dbschema"`
 	Host      string    `gorm:"column:host"`
