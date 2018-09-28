@@ -29,3 +29,4 @@ supervisorctl start airdb
 # ToDo
 - Docker application installer
 - Add users
+- User roles and permissions for specific queries for example "delete, update" queries
