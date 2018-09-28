@@ -4,7 +4,7 @@ alot of database data.
 
 ![Alt text](ui/assets/img/preview.png?raw=true "Title")
 
-# installation
+# Installation
 Clone the repo into your desired directory. Cd into the root of airdb and configure the application.
 
 To config the application run the command below and follow the steps. airdb has to main deployment
@@ -12,6 +12,7 @@ methods being docker and supervisord. Docker deployment is not yet complete.
 ```bash
 sudo ./airdb -i 
 ```
+# Deploy 
 To run the application you must have installed supervisord on your server to finish the application
 configuration. Once the configuration is completed successfully run the commands below to reread your 
 supervisord config and start airdb in supervisorctl 
