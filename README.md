@@ -12,7 +12,7 @@ methods being docker and supervisord. Docker deployment is not yet complete.
 ```bash
 sudo ./airdb -i 
 ```
-# Deploy 
+# Deploy with supervisord
 To run the application you must have installed supervisord on your server to finish the application
 configuration. Once the configuration is completed successfully run the commands below to reread your 
 supervisord config and start airdb in supervisorctl 
@@ -26,3 +26,6 @@ supervisorctl update
 ```bash
 supervisorctl start airdb
 ```
+# ToDo
+- Docker application installer
+- Add users
