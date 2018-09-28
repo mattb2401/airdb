@@ -1,13 +1,19 @@
 package installer
 
 import (
+	"airdb/config"
 	"airdb/helpers"
+	"airdb/models"
 	"database/sql"
 	"errors"
 	"fmt"
+	"kyaps-api/app/libraries"
 	"os"
 	"strings"
+	"time"
 
+	"github.com/howeyc/gopass"
+	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 )
 
@@ -37,13 +43,13 @@ func dbInstaller() {
 	}
 
 	fmt.Print("Enter your db password: ")
-	var dbPassword string
-	_, err = fmt.Scanf("%s\n", &dbPassword)
+	var dbPassword []byte
+	dbPassword, err = gopass.GetPasswd()
 	if err != nil {
 		fmt.Println("Enter database info to continue error " + err.Error())
 		os.Exit(103)
 	}
-	err = helpers.Setenv("dbPassword", dbPassword)
+	err = helpers.Setenv("dbPassword", string(dbPassword))
 	if err != nil {
 		fmt.Println("Exception occured while setting your db password error " + err.Error())
 		os.Exit(103)
@@ -74,14 +80,72 @@ func dbInstaller() {
 		fmt.Println("Exception occured while setting your db host port error " + err.Error())
 		os.Exit(103)
 	}
-
 	err = initDB()
 	if err != nil {
 		fmt.Println("Exception occured while creating airdb database " + err.Error())
 		os.Exit(103)
 	}
-
 	fmt.Println("Database setup complete.. \n")
+	fmt.Println("Create your master web credentials \n")
+	fmt.Print("Enter your account name: ")
+	var name string
+	_, err = fmt.Scanf("%s\n", &name)
+	if err != nil {
+		fmt.Println("Enter name info to continue error " + err.Error())
+		os.Exit(103)
+	}
+	fmt.Print("Enter your username: ")
+	var username string
+	_, err = fmt.Scanf("%s\n", &username)
+	if err != nil {
+		fmt.Println("Enter username info to continue error " + err.Error())
+		os.Exit(103)
+	}
+	fmt.Print("Enter your password: ")
+	var password []byte
+	password, err = gopass.GetPasswd()
+	if err != nil {
+		fmt.Println("Enter password info to continue error " + err.Error())
+		os.Exit(103)
+	}
+	err = createMasterUser(name, username, string(password))
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(103)
+	}
+	fmt.Println("Master user setup complete.. \n")
+}
+
+func createMasterUser(name string, username string, password string) error {
+	config := config.GetConfig()
+	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true", config.DB.Username, config.DB.Password, config.DB.Host, config.DB.Port, config.DB.Name, config.DB.Charset)
+	db, err := gorm.Open(config.DB.Dialect, dbURI)
+	if err != nil {
+		return err
+	}
+	user := models.User{}
+	if db.Where("roles = ?", "gaurdian").First(&user).RecordNotFound() {
+		if db.Where("username = ?", username).First(&user).RecordNotFound() {
+			pass, err := libraries.HashPassword(password)
+			if err != nil {
+				return err
+			}
+			user.Username = username
+			user.Password = pass
+			user.Name = name
+			user.Roles = "gaurdian"
+			user.Status = "Active"
+			user.CreatedAt = time.Now()
+			if err := db.Create(&user).Error; err != nil {
+				return err
+			}
+			return nil
+		} else {
+			return errors.New("Master Username already exits")
+		}
+	} else {
+		return errors.New("Master user already exists on this database")
+	}
 }
 
 func initDB() error {
